@@ -8,6 +8,7 @@ import { selectError, selectIsLoading } from '../redux/selectors';
 import { useEffect } from 'react';
 import { fetchContacts } from 'redux/operations';
 import Loader from './Phonebook/Loader';
+import UserMenu from './Phonebook/UserMenu/UserMenu';
 
 function App() {
   const isLoading = useSelector(selectIsLoading);
@@ -21,6 +22,7 @@ function App() {
 
   return (
     <div className={css.phonebook__section}>
+      <UserMenu/>
       <h1>Phonebook</h1>
       <ContactForm />
       <h2>Contacts</h2>
