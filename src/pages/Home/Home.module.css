@@ -1,0 +1,10 @@
+.home__title {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    height: 50px;
+    width: 500px;
+    color: #fff;
+    background: #333334;
+    box-shadow: 10px 5px 5px rgb(249, 248, 158);
+}

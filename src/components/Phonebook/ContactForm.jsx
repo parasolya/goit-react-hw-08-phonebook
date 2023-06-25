@@ -7,7 +7,7 @@ import { addContact } from 'redux/operations';
 
 function ContactForm() {
   const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+  const [number, setPhone] = useState('');
 
   const contacts = useSelector(selectContacts);
 
@@ -19,7 +19,7 @@ function ContactForm() {
       case 'name':
         setName(value);
         break;
-      case 'phone':
+      case 'number':
         setPhone(value);
         break;
       default:
@@ -32,7 +32,7 @@ function ContactForm() {
     const contact = {
       id: nanoid(),
       name,
-      phone,
+      number,
     };
 
     const sameName = contacts.find(
@@ -41,9 +41,10 @@ function ContactForm() {
     if (sameName) return alert(sameName.name + ' is already in contacts.');
 
     const sameNumber = contacts.find(
-      el => el.phone.toLowerCase() === contact.phone.toLowerCase()
+      el => el.number.toLowerCase() === contact.number.toLowerCase()
     );
-    if (sameNumber) return alert(sameNumber.phone + ' is already in contacts.');
+    if (sameNumber)
+      return alert(sameNumber.number + ' is already in contacts.');
 
     dispatch(addContact(contact));
 
@@ -72,11 +73,11 @@ function ContactForm() {
           Number
           <input
             type="tel"
-            name="phone"
+            name="number"
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
-            value={phone}
+            value={number}
             onChange={e => {
               handleInputChange(e);
             }}

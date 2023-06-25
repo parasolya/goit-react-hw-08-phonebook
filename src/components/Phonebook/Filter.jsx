@@ -12,12 +12,6 @@ const Filter = ({ value, changeFilter }) => {
   const handleChangeFilter = e => {
     dispatch(filterAction(e.currentTarget.value));
   };
-  // const visibleContacts = () => {
-  //   const visible = contacts.filter(contact =>
-  //     contact.name.toLowerCase().includes(filter.toLowerCase())
-  //   );
-  //   return visible;
-  // };
   
   return (
     <div>

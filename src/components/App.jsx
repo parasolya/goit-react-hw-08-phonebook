@@ -1,36 +1,63 @@
 import React from 'react';
-import ContactForm from './Phonebook/ContactForm';
-import Filter from './Phonebook/Filter';
-import ContactList from './Phonebook/ContactList';
-import css from '././Phonebook/Phonebook.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectError, selectIsLoading } from '../redux/selectors';
 import { useEffect } from 'react';
-import { fetchContacts } from 'redux/operations';
-import Loader from './Phonebook/Loader';
-import UserMenu from './Phonebook/UserMenu/UserMenu';
+
+import { NotFound } from '../components/Phonebook/NotFound';
+import { Route, Routes } from 'react-router-dom';
+import AppBar from './Navigation/AppBar';
+import Home from 'pages/Home/Home';
+import Login from 'pages/Login/Login';
+import Contacts from 'pages/Contacts/Contacts';
+import Register from 'pages/Register/Register';
+import { refreshUser } from 'redux/Auth/operations';
+import PrivateRoute from './Navigation/PrivateRoute';
+import { RestrictedRoute } from './Navigation/RestrictedRoute';
+import { selectIsRefreshing } from 'redux/Auth/selectors';
 
 function App() {
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
+  const isRefreshing = useSelector(selectIsRefreshing);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchContacts());
+    dispatch(refreshUser());
   }, [dispatch]);
 
   return (
-    <div className={css.phonebook__section}>
-      <UserMenu/>
-      <h1>Phonebook</h1>
-      <ContactForm />
-      <h2>Contacts</h2>
-      <Filter />
-      {error && <h2>{error}</h2>}
-      {isLoading && !error && <Loader />}
-      <ContactList />
-    </div>
+    !isRefreshing && (
+      <div>
+        <Routes>
+          <Route path="/" element={<AppBar />}>
+            <Route index element={<Home />} />
+            <Route
+              path="register"
+              element={
+                <RestrictedRoute>
+                  <Register />
+                </RestrictedRoute>
+              }
+            />
+            <Route
+              path="login"
+              element={
+                <RestrictedRoute>
+                  <Login />
+                </RestrictedRoute>
+              }
+            />
+            <Route
+              path="contacts"
+              element={
+                <PrivateRoute>
+                  <Contacts />
+                </PrivateRoute>
+              }
+            />
+          </Route>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </div>
+    )
   );
 }
 
